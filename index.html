@@ -20,10 +20,12 @@
           <option value="901">901</option>
         </select>
             <button id="gameTypeButton">Rögzít</button>
+            <button id="resetButton">Full Reset</button>
+
     </form>
     <div class="roundblock">
             <h2>Aktuális kör:</h2>
-            <form action="">
+            <form action="" id="gameform">
                 <label for="Firstthrow">Első dobás: </label>
                 <select id="Firstthrow" name="firstthrow">
                 </select>
@@ -61,6 +63,7 @@
                     <button id="RoundSubmit">Kör rögzítése</button>
             </form>
     </div>
+    <p>Kiszálló-e: <span id="canout">Nem</span></p>
 </body>
 <script src="script.js"></script>
 

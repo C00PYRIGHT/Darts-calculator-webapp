@@ -3,11 +3,27 @@ const gameTypeInput = document.getElementById('gametype');
 const firstElement = document.getElementById("Firstthrow");
 const thirdElement = document.getElementById("Thirdthrow");
 const secondElement = document.getElementById("Secondthrow");
+const firstmultipler = document.getElementById("Firstmultipler");
+const secondmultipler = document.getElementById("Secondmultipler");
+const thirdmultipler = document.getElementById("Thirdmultipler");
+const gameform = document.getElementById("gameform");
 
+const canout = document.getElementById('canout');
+let maxpoint = 0;
+
+let throwlist = [];
 
 
 document.addEventListener("DOMContentLoaded", () => {
 console.log("loaded");
+maxpoint = localStorage.getItem("score");
+counter.innerHTML = maxpoint;
+if(maxpoint <= 180){
+    canout.innerHTML = "Igen";
+}else{
+    canout.innerHTML = "Nem";
+
+}
 
 for (let i = 0; i <= 20; i++) {
     let option1 = document.createElement("option");
@@ -30,7 +46,50 @@ for (let i = 0; i <= 20; i++) {
 document.getElementById('gameTypeButton').onclick = (evt => {
     evt.preventDefault();
     console.log('click');
-    let maxpoint = gameTypeInput.value;
+    maxpoint = gameTypeInput.value;
     counter.innerHTML = maxpoint;
+    localStorage.setItem("score", maxpoint);
+    if(maxpoint <= 180){
+        canout.innerHTML = "Igen";
+    }else{
+        canout.innerHTML = "Nem";
+
+    }
     
 });
+document.getElementById('RoundSubmit').onclick = (event => {
+    event.preventDefault();
+    if(maxpoint === 0){
+        alert("Nincs beállítva pontszám!")
+    }else{
+    let first = firstElement.value * firstmultipler.value;
+    let second = secondElement.value * secondmultipler.value;
+    let third = thirdElement.value * thirdmultipler.value;
+    let Roundsum = first+second+third;
+    console.log(Roundsum)
+    if(Roundsum < maxpoint){
+    maxpoint -= Roundsum;
+    counter.innerHTML = maxpoint;
+    localStorage.setItem("score", maxpoint);
+    }else{
+        alert("Túldobtál!");
+    }
+    if(maxpoint <= 180){
+        canout.innerHTML = "Igen";
+    }else{
+        canout.innerHTML = "Nem";
+
+    }
+    gameform.reset();
+
+
+    }
+
+
+});
+document.getElementById('resetButton').onclick = (event => {
+    event.preventDefault();
+    maxpoint = 0;
+    localStorage.setItem("score",maxpoint);
+    counter.innerHTML = maxpoint;
+})
