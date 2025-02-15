@@ -21,7 +21,15 @@ let throwlist = [];
 document.addEventListener("DOMContentLoaded", () => {
 console.log("loaded");
 maxpoint = localStorage.getItem("score");
-throwlist = JSON.parse(localStorage.getItem("throws")) || [];
+if(localStorage.getItem("throws")!= null){
+throwlist = JSON.parse(localStorage.getItem("throws")) || [];}
+else{
+    maxpoint = 0;
+    localStorage.setItem("score",maxpoint);
+    throwlist= [];
+    localStorage.setItem("throws", JSON.stringify(throwlist));
+    uiupdate();
+}
 console.log(throwlist)
 uiupdate();
 
