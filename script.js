@@ -1,5 +1,6 @@
 const counter = document.getElementById('pointcounter');
 const gameTypeInput = document.getElementById('gametype');
+const doubleInput = document.getElementById('doubleout');
 const firstElement = document.getElementById("Firstthrow");
 const thirdElement = document.getElementById("Thirdthrow");
 const secondElement = document.getElementById("Secondthrow");
@@ -10,8 +11,10 @@ const gameform = document.getElementById("gameform");
 const table = document.getElementById("ResultTable").getElementsByTagName('tbody')[0];
 
 const canout = document.getElementById('canout');
-let maxpoint = 0;
+const outnums = document.getElementById('outnums');
 
+let maxpoint = 0;
+let doubleout = false;
 let throwlist = [];
 
 
@@ -44,6 +47,7 @@ document.getElementById('gameTypeButton').onclick = (evt => {
     evt.preventDefault();
     console.log('click');
     maxpoint = gameTypeInput.value;
+    doubleout = doubleInput.value;
     localStorage.setItem("score", maxpoint);
     uiupdate();
 
@@ -51,7 +55,7 @@ document.getElementById('gameTypeButton').onclick = (evt => {
 });
 document.getElementById('RoundSubmit').onclick = (event => {
     event.preventDefault();
-    if(maxpoint === 0){
+    if(maxpoint == 0){
         alert("Nincs beállítva pontszám!")
     }else{
     let first = firstElement.value * firstmultipler.value;
@@ -88,8 +92,12 @@ document.getElementById('resetButton').onclick = (event => {
 
 function uiupdate(){
     counter.innerHTML = maxpoint;
-    if(maxpoint <= 180){
+    if(maxpoint == 0){
+        canout.innerHTML = "Nincs folyamatban játék";
+
+    }else if(maxpoint <= 180){
         canout.innerHTML = "Igen";
+
     }else{
         canout.innerHTML = "Nem";
 
@@ -115,7 +123,46 @@ function uiupdate(){
     }
 
     table.appendChild(row); // Sor hozzáadása a táblázathoz
+
     }
+    
+    if(maxpoint <= 180 && maxpoint !=0){
+    let outlist = findCheckout(maxpoint,false);
+ 
+    let string = `${outlist[0][0]}x${outlist[0][1]}, ${outlist[1][0]}x${outlist[1][1]}, ${outlist[2][0]}x${outlist[2][1]}` 
+    outnums.innerHTML = string }
+    else{
+        outnums.innerHTML = "Nem kiszálló";
+    };
 };
+function findCheckout(score, requireDoubleOut = true) {
+    const doubles = Array.from({ length: 20 }, (_, i) => ({ score: (i + 1) * 2, value: [i + 1, 2] }));
+    const triples = Array.from({ length: 20 }, (_, i) => ({ score: (i + 1) * 3, value: [i + 1, 3] }));
+    const singles = Array.from({ length: 20 }, (_, i) => ({ score: i + 1, value: [i + 1, 1] }));
+
+    const validLastThrows = requireDoubleOut ? doubles : doubles.concat(singles);
+
+    // 1 dobás kiszálló
+    let oneDart = validLastThrows.find(d => d.score === score);
+    if (oneDart) return [oneDart.value];
+
+    // 2 dobás kiszálló
+    for (let t of triples.concat(singles)) {
+        let remaining = score - t.score;
+        let lastThrow = validLastThrows.find(d => d.score === remaining);
+        if (lastThrow) return [t.value, lastThrow.value];
+    }
+
+    // 3 dobás kiszálló
+    for (let t1 of triples.concat(singles)) {
+        for (let t2 of triples.concat(singles)) {
+            let remaining = score - t1.score - t2.score;
+            let lastThrow = validLastThrows.find(d => d.score === remaining);
+            if (lastThrow) return [t1.value, t2.value, lastThrow.value];
+        }
+    }
+
+    return [];
+}
 
 
