@@ -4,21 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script></script>
     <title>Darts számoló</title>
+
+</head>
+<body>
     <h1>Darts számláló</h1>
-    <p>Hátralévő pontszámod: <span id="points left">0</span></p>
+    <p>Hátralévő pontszámod: <span id="pointcounter">0</span></p>
     <form action="">
-        <label for="Gametype">Choose a car:</label>
-        <select id="Gametype" name="gametype">
+        <label for="Gametype">Válassz játékot:</label>
+        <select id="gametype" name="gametype">
           <option value="301" selected>301</option>
           <option value="501">501</option>
           <option value="701">701</option>
           <option value="901">901</option>
         </select>
-        <input type="submit">
-      </form>
-</head>
-<body>
+            <button id="gameTypeButton">Rögzít</button>
+    </form>
+    <div class="roundblock">
+            <h2>Aktuális kör:</h2>
+            <form action="">
+                <label for="Firstthrow">Első dobás: </label>
+                <select id="Firstthrow" name="firstthrow">
+                </select>
+                <select id="Firstmultipler" name="firstmultipler">
+                    <option value="1" selected>1x</option>
+                    <option value="2" >2x</option>
+                    <option value="3" >3x</option>
+
+
+                </select>
+                <div>
+                <label for="Secondthrow">Második dobás: </label>
+                <select id="Secondthrow" name="secondthrow">
+                </select>
+                <select id="Secondmultipler" name="secondmultipler">
+                    <option value="1" selected>1x</option>
+                    <option value="2" >2x</option>
+                    <option value="3" >3x</option>
+
+
+                </select>
+                </div>
+                <div>
+                    <label for="Thirdthrow">Harmadik dobás: </label>
+                    <select id="Thirdthrow" name="thirdthrow">
+                    </select>
+                    <select id="Thirdmultipler" name="Thirdmultipler">
+                        <option value="1" selected>1x</option>
+                        <option value="2" >2x</option>
+                        <option value="3" >3x</option>
     
+    
+                    </select>
+                    </div>
+                    <button id="RoundSubmit">Kör rögzítése</button>
+            </form>
+    </div>
 </body>
+<script src="script.js"></script>
+
 </html>
