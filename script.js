@@ -17,13 +17,8 @@ let throwlist = [];
 document.addEventListener("DOMContentLoaded", () => {
 console.log("loaded");
 maxpoint = localStorage.getItem("score");
-counter.innerHTML = maxpoint;
-if(maxpoint <= 180){
-    canout.innerHTML = "Igen";
-}else{
-    canout.innerHTML = "Nem";
 
-}
+uiupdate();
 
 for (let i = 0; i <= 20; i++) {
     let option1 = document.createElement("option");
@@ -47,14 +42,9 @@ document.getElementById('gameTypeButton').onclick = (evt => {
     evt.preventDefault();
     console.log('click');
     maxpoint = gameTypeInput.value;
-    counter.innerHTML = maxpoint;
     localStorage.setItem("score", maxpoint);
-    if(maxpoint <= 180){
-        canout.innerHTML = "Igen";
-    }else{
-        canout.innerHTML = "Nem";
+    uiupdate();
 
-    }
     
 });
 document.getElementById('RoundSubmit').onclick = (event => {
@@ -69,17 +59,14 @@ document.getElementById('RoundSubmit').onclick = (event => {
     console.log(Roundsum)
     if(Roundsum < maxpoint){
     maxpoint -= Roundsum;
-    counter.innerHTML = maxpoint;
     localStorage.setItem("score", maxpoint);
+    let round = [first,second,third];
+    throwlist.push(round);
     }else{
         alert("Túldobtál!");
     }
-    if(maxpoint <= 180){
-        canout.innerHTML = "Igen";
-    }else{
-        canout.innerHTML = "Nem";
+    uiupdate();
 
-    }
     gameform.reset();
 
 
@@ -91,5 +78,17 @@ document.getElementById('resetButton').onclick = (event => {
     event.preventDefault();
     maxpoint = 0;
     localStorage.setItem("score",maxpoint);
+    throwlist= [];
+    uiupdate();
+});
+
+function uiupdate(){
     counter.innerHTML = maxpoint;
-})
+    if(maxpoint <= 180){
+        canout.innerHTML = "Igen";
+    }else{
+        canout.innerHTML = "Nem";
+
+    }
+
+}
