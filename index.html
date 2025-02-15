@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +9,12 @@
 
 </head>
 <body>
+    <div class="base">
     <h1>Darts számláló</h1>
+    
     <p>Hátralévő pontszámod: <span id="pointcounter">0</span></p>
     <form action="">
+        <div>
         <label for="Gametype">Válassz játékot:</label>
         <select id="gametype" name="gametype">
           <option value="301" selected>301</option>
@@ -19,13 +22,16 @@
           <option value="701">701</option>
           <option value="901">901</option>
         </select>
+    </div>
+    <div>
             <button id="gameTypeButton">Rögzít</button>
             <button id="resetButton">Full Reset</button>
-
+        </div>  
     </form>
     <div class="roundblock">
             <h2>Aktuális kör:</h2>
             <form action="" id="gameform">
+                <div>
                 <label for="Firstthrow">Első dobás: </label>
                 <select id="Firstthrow" name="firstthrow">
                 </select>
@@ -36,6 +42,7 @@
 
 
                 </select>
+            </div>
                 <div>
                 <label for="Secondthrow">Második dobás: </label>
                 <select id="Secondthrow" name="secondthrow">
@@ -64,6 +71,21 @@
             </form>
     </div>
     <p>Kiszálló-e: <span id="canout">Nem</span></p>
+
+    <table id="ResultTable">
+        <thead>
+            <th style="width: 20px;"></th>
+            <th>I.</th>
+            <th>II.</th>
+            <th>III.</th>
+        </thead>
+      <tbody>
+
+
+      </tbody>
+
+    </table>
+    </div>
 </body>
 <script src="script.js"></script>
 
