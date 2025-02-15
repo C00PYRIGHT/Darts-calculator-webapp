@@ -1,5 +1,5 @@
 const counter = document.getElementById('pointcounter');
-const gameTypeInput = document.getElementById('Gametype');
+const gameTypeInput = document.getElementById('gametype');
 const firstElement = document.getElementById("Firstthrow");
 const thirdElement = document.getElementById("Thirdthrow");
 const secondElement = document.getElementById("Secondthrow");
