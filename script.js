@@ -1,5 +1,7 @@
 const counter = document.getElementById('pointcounter');
+const namedisplay = document.getElementById('namedisplay');
 const gameTypeInput = document.getElementById('gametype');
+const nameInput = document.getElementById('name');
 const doubleInput = document.getElementById('doubleout');
 const firstElement = document.getElementById("Firstthrow");
 const thirdElement = document.getElementById("Thirdthrow");
@@ -9,23 +11,29 @@ const secondmultipler = document.getElementById("Secondmultipler");
 const thirdmultipler = document.getElementById("Thirdmultipler");
 const gameform = document.getElementById("gameform");
 const table = document.getElementById("ResultTable").getElementsByTagName('tbody')[0];
+const Leaderboardtable = document.getElementById("LeaderboardTable").getElementsByTagName('tbody')[0];
+
 
 const canout = document.getElementById('canout');
 const outnums = document.getElementById('outnums');
-
+let namevar = "Noname";
 let maxpoint = 0;
 let doubleout = false;
 let throwlist = [];
 
 
 document.addEventListener("DOMContentLoaded", () => {
+    refreshLeaderboard()
 console.log("loaded");
 maxpoint = localStorage.getItem("score");
+namevar = localStorage.getItem("name");
 if(localStorage.getItem("throws")!= null){
 throwlist = JSON.parse(localStorage.getItem("throws")) || [];}
 else{
     maxpoint = 0;
     localStorage.setItem("score",maxpoint);
+    localStorage.setItem("name",namevar);
+    namevar = "Noname";
     throwlist= [];
     localStorage.setItem("throws", JSON.stringify(throwlist));
     uiupdate();
@@ -33,7 +41,10 @@ else{
 console.log(throwlist)
 uiupdate();
 
-for (let i = 0; i <= 20; i++) {
+for (let i = 0; i <= 21; i++) {
+    if (i == 21){
+        i = 25;
+    }
     let option1 = document.createElement("option");
     option1.value = i;
     option1.textContent = i;
@@ -57,14 +68,16 @@ document.getElementById('gameTypeButton').onclick = (evt => {
     maxpoint = gameTypeInput.value;
     doubleout = doubleInput.value;
     localStorage.setItem("score", maxpoint);
+    namevar = nameInput.value;
+    localStorage.setItem("name",namevar)
     uiupdate();
 
     
 });
 document.getElementById('RoundSubmit').onclick = (event => {
     event.preventDefault();
-    if(maxpoint == 0){
-        alert("Nincs beállítva pontszám!")
+    if(maxpoint == 0 || namevar === "Noname" || namevar === ""  || namevar == null   ){
+        alert("Nincs beállítva pontszám vagy név!")
     }else{
     let first = firstElement.value * firstmultipler.value;
     let second = secondElement.value * secondmultipler.value;
@@ -77,6 +90,7 @@ document.getElementById('RoundSubmit').onclick = (event => {
     let round = [first,second,third];
     throwlist.push(round);
     localStorage.setItem("throws", JSON.stringify(throwlist));
+    sendPostWebhook("https://n8n.bencedaniel.hu/webhook/dartsleaderboard",`${namevar}|${maxpoint}`)
     }else{
         alert("Túldobtál!");
     }
@@ -100,6 +114,8 @@ document.getElementById('resetButton').onclick = (event => {
 
 function uiupdate(){
     counter.innerHTML = maxpoint;
+    namedisplay.innerHTML = namevar;
+
     if(maxpoint == 0){
         canout.innerHTML = "Nincs folyamatban játék";
 
@@ -142,6 +158,7 @@ function uiupdate(){
     else{
         outnums.innerHTML = "Nem kiszálló";
     };
+
 };
 function findCheckout(score, requireDoubleOut = true) {
     const doubles = Array.from({ length: 20 }, (_, i) => ({ score: (i + 1) * 2, value: [i + 1, 2] }));
@@ -172,5 +189,86 @@ function findCheckout(score, requireDoubleOut = true) {
 
     return [];
 }
+function checkSelection1(){
+    
+    if (firstElement.value === '25'){
+
+        firstmultipler.options[2].disabled = true;
+        console.log(firstmultipler.options)
+
+    } else {
+        firstmultipler.options[2].disabled = false;
+
+    }
+};
+function checkSelection2(){
+    refreshLeaderboard()
+    if (secondElement.value === '25'){
+
+        secondmultipler.options[2].disabled = true;
+        console.log(firstmultipler.options)
+
+    } else {
+        secondmultipler.options[2].disabled = false;
+
+    }
+};
+function checkSelection3(){
+    if (thirdElement.value === '25'){
+
+        thirdmultipler.options[2].disabled = true;
+        console.log(firstmultipler.options)
+
+    } else {
+        thirdmultipler.options[2].disabled = false;
+
+    }
+};
+function sendPostWebhook(url,text){
+$.ajax({
+   data: 'payload=' + JSON.stringify({
+    "text": text
+   }),
+   dataType: 'json',
+   processData: false,
+   type: 'POST',
+   url: url
+});
+};
+function refreshLeaderboard(){
+    fetch('leaderboard.txt')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Hiba: ${response.status}`);
+        }
+        return response.text(); // Szöveges formában olvassuk be
+    })
+    .then(data => {
+        while (Leaderboardtable.firstChild) {
+            Leaderboardtable.removeChild(Leaderboardtable.firstChild); // Első elemet mindig töröljük, amíg van
+        }
+       let records = data.split("\n");
+       for (let record of records) {
+        let parts = record.split('|'); // Adatokat szétválasztjuk
+        
+        if (parts.length < 2) continue; // Ha nincs elég adat, kihagyjuk
+
+        let row = document.createElement("tr"); // Új sor létrehozása
+        let firstCell = document.createElement("td");
+        let secondCell = document.createElement("td");
+
+        firstCell.textContent = parts[0]; // Név
+        secondCell.textContent = parts[1]; // Pontszám
+
+        row.appendChild(firstCell);
+        row.appendChild(secondCell);
+        Leaderboardtable.appendChild(row); // Sor hozzáadása a táblázathoz
+       }
+    })
+    .catch(error => console.error('Hiba történt:', error));
+    
+
+};
+setInterval(refreshLeaderboard, 2000);
 
 

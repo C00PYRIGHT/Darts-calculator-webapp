@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <title>Darts számoló</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hack-font/3.3.0/web/hack.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 </head>
 <body>
@@ -13,6 +16,8 @@
     <h1>Darts számláló</h1>
     
     <p>Hátralévő pontszámod: <span id="pointcounter">0</span></p>
+    <p>Neved: <span id="namedisplay">NONAME</span></p>
+
     <form action="">
         <div>
         <label for="Gametype">Válassz játékot:</label>
@@ -24,12 +29,17 @@
         </select>
 
         
-
+        <div>
         <label for="doubleout">Double out:</label>
         <select id="doubleout" name="doubleout">
             <option value="true">Igen</option>
           <option value="false" selected>Nem</option>
         </select>
+    </div>
+        <div>
+        <label for="name">Neved:</label>
+        <input id="name" type="text">
+    </div>
     </div>
     <div>
             <button id="gameTypeButton">Rögzít</button>
@@ -41,7 +51,7 @@
             <form action="" id="gameform">
                 <div>
                 <label for="Firstthrow">Első dobás: </label>
-                <select id="Firstthrow" name="firstthrow">
+                <select id="Firstthrow" name="firstthrow" onchange="checkSelection1()">
                 </select>
                 <select id="Firstmultipler" name="firstmultipler">
                     <option value="1" selected>1x</option>
@@ -53,7 +63,7 @@
             </div>
                 <div>
                 <label for="Secondthrow">Második dobás: </label>
-                <select id="Secondthrow" name="secondthrow">
+                <select id="Secondthrow" name="secondthrow" onchange="checkSelection2()">
                 </select>
                 <select id="Secondmultipler" name="secondmultipler">
                     <option value="1" selected>1x</option>
@@ -65,7 +75,7 @@
                 </div>
                 <div>
                     <label for="Thirdthrow">Harmadik dobás: </label>
-                    <select id="Thirdthrow" name="thirdthrow">
+                    <select id="Thirdthrow" name="thirdthrow" onchange="checkSelection3()">
                     </select>
                     <select id="Thirdmultipler" name="Thirdmultipler">
                         <option value="1" selected>1x</option>
@@ -96,6 +106,24 @@
 
     </table>
     </div>
+    <div class="base">
+
+        <h1>Leaderboard</h1>
+    
+        <table id="LeaderboardTable">
+            <thead>
+                
+                <th style="width: 70%;">Név</th>
+                <th>Pontszám</th>
+                
+            </thead>
+          <tbody>
+    
+    
+          </tbody>
+    
+        </table>
+        </div>
 </body>
 <script src="script.js"></script>
 
