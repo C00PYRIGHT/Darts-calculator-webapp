@@ -40,9 +40,11 @@ select, button {
     border-radius: 5px;
     border: 1px solid #ccc;
 }
-
+select{
+    background-color: #666;
+}
 button {
-    background-color: #007bff;
+    background-color: #95211b;
     color: white;
     cursor: pointer;
     border: none;
@@ -50,7 +52,7 @@ button {
 
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #62120e;
 }
 
 .roundblock {
@@ -83,7 +85,7 @@ th, td {
 }
 
 th {
-    background-color: #007bff;
+    background-color: #1f8a1e;
     color: white;
 }
 
