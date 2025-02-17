@@ -41,20 +41,26 @@ label {
 
 select, button {
     font-size: 16px;
-    padding: 10px;
+
     border-radius: 5px;
     border: 1px solid #ccc;
 }
 select{
     background-color: #666;
     color: #ddd;
+    padding: 10px;
+    margin-right: 10px;
 }
-
+label{
+    align-self: center;
+}
 button {
     background-color: #95211b;
     color: white;
     cursor: pointer;
     border: none;
+    padding: 15px;
+    margin: 10px;
 }
 
 
